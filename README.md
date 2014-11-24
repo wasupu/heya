@@ -3,14 +3,14 @@ heya
 
 _Heya (sumo) from the Japanese word for "room" (部屋)_
 
-Heya is the first step in a log [roadmap](https://github.com/wasupu/heya/wiki/Roadmap) describes in the project [wiki](https://github.com/wasupu/heya/wiki), the project consist in create a simulation of one autonomous robot that live in a plain, no obstacles, walled environment.
+Heya is the first step in a long [roadmap](https://github.com/wasupu/heya/wiki/Roadmap) described in the project [wiki](https://github.com/wasupu/heya/wiki), the project consists in the creation of a simulation of an autonomous robot that lives in a walled environment with no obstacles.
 
 The project is developed using [scala](http://www.scala-lang.org/). The main reason use [scala](http://www.scala-lang.org/) is mainly the actors system built in the language that permits the simulation of the physical robots.
 
-The virtual robot target is visit all points of its square plain world and transmit the information to an external observer. 
+The goal of the virtual robot is to visit all points of a square plain world and to transmit that information to an external observer. 
 
-The only information that can use the robot to reach this mission is it on board sensor information.
+The only information that the robot can use to achieve this mission is through its onboard sensor.
 
-The robot in this first step don't have any energy restriction.
+In this first stage, the robot doesn't have any energy restrictions.
 
-Other restriction of this project is the resulting virtual robot can be constructed using [lego mindstorm](http://www.lego.com/en-us/mindstorms/?domainredir=mindstorms.lego.com). Why? when this phase are reached the resulting robot will be prototyped easily using this technology.
+Another restriction of this project is that the resulting virtual robot, should be constructed using [lego mindstorm](http://www.lego.com/en-us/mindstorms/?domainredir=mindstorms.lego.com). Why? In order to easily create a prototype robot using this technology.
