@@ -18,3 +18,4 @@ Another restriction of this project is that the resulting virtual robot, should 
 
 * Install [sbt](http://www.scala-sbt.org/) (Scala build tool)
 * Clone the repository in your local machine
+* sbt run
