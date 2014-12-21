@@ -1,5 +1,4 @@
-heya
-======
+## Heya
 
 _Heya (sumo) from the Japanese word for "room" (部屋)_
 
@@ -14,3 +13,8 @@ The only information that the robot can use to achieve this mission is through i
 In this first stage, the robot doesn't have any energy restrictions.
 
 Another restriction of this project is that the resulting virtual robot, should be constructed using [lego mindstorm](http://www.lego.com/en-us/mindstorms/?domainredir=mindstorms.lego.com). Why? In order to easily create a prototype robot using this technology.
+
+### Getting started
+
+* Install [sbt](http://www.scala-sbt.org/) (Scala build tool)
+* Clone the repository in your local machine
