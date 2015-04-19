@@ -4,6 +4,7 @@ import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.pattern.ask
 import akka.testkit.{TestActorRef, TestKit, TestProbe}
 import akka.util.Timeout
+import com.wasupu.heya.calculator.domain.WorldProtocol.Status
 import org.json4s.DefaultFormats
 import org.scalatest.{FlatSpecLike, Matchers}
 import spray.http._
@@ -11,6 +12,7 @@ import spray.http._
 import scala.concurrent.duration._
 import scala.language.postfixOps
 import scala.util.Success
+import org.json4s.jackson.JsonMethods._
 
 class SimulationServiceTest extends TestKit(ActorSystem("testing")) with FlatSpecLike with Matchers {
 
@@ -67,6 +69,7 @@ class SimulationServiceTest extends TestKit(ActorSystem("testing")) with FlatSpe
     val future = actorRef ? getSimulationStatusRequest
 
     worldProbe.expectMsg("status")
+    worldProbe.reply(Status(1))
 
     val Success(response: HttpResponse) = future.value.get
     response.status should be(StatusCodes.OK)
@@ -83,6 +86,26 @@ class SimulationServiceTest extends TestKit(ActorSystem("testing")) with FlatSpe
     worldProbe.expectMsg(500 millis, "status")
   }
 
+  it should "return the number of robots" in {
+    implicit val timeout = Timeout(timeoutMillis millis)
+    val worldProbe = TestProbe()
+    val actorRef = TestActorRef(Props(new SimulationServiceStub(worldProbe.ref)))
+    val future = actorRef ? getSimulationStatusRequest
+
+    worldProbe.expectMsg("status")
+    worldProbe.reply(Status(1))
+
+    val Success(response: HttpResponse) = future.value.get
+
+    val responseBody = parse(response.entity.asString).extract[Map[String, _]]
+
+    val maybeRobots: Option[Seq[Map[String, _]]] = responseBody.get("robots").asInstanceOf[Option[Seq[Map[String, _]]]]
+
+    maybeRobots.foreach(robots =>{
+      robots.length should be equals(1L)
+    })
+  }
+
   def createSimulationRequest: HttpRequest = {
     HttpRequest(HttpMethods.POST, "/api/simulation")
   }
@@ -94,7 +117,6 @@ class SimulationServiceTest extends TestKit(ActorSystem("testing")) with FlatSpe
   def getSimulationStatusRequest: HttpRequest = {
     HttpRequest(HttpMethods.GET, "/api/simulation")
   }
-
 
   private class SimulationServiceStub(wold: ActorRef = TestProbe().ref) extends SimulationService {
     override def createWorld: ActorRef = wold

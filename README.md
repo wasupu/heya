@@ -22,4 +22,10 @@ Another restriction of this project is that the resulting virtual robot, should 
 * service/target/universal/stage/bin/heya-service
 * sbt acceptance:test
 
+#### Simulate API
+
+* GET http://hostname:port/api/heartbeat if respond 200 (OK) the server is ready
+* POST http://hostname:port/api/simulation start new simulation
+* DELETE http://hostname:port/api/simulation stop the current simulation
+* GET  http://hostname:port/api/simulation return a json object with the data of the current simulation
 

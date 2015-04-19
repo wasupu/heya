@@ -7,3 +7,4 @@ Feature: Stop simulation
   Scenario: Get simulation status
     When I send the get simulation status command
     Then the response code should be 200
+    And there 1 robot active in the simulation

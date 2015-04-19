@@ -1,4 +1,4 @@
-package com.wasupu.heya.acceptanceTests.heartbeat
+package com.wasupu.heya.acceptanceTests.response
 
 import com.wasupu.heya.acceptanceTests.sharedContent.SharedContext
 import cucumber.api.scala.{EN, ScalaDsl}

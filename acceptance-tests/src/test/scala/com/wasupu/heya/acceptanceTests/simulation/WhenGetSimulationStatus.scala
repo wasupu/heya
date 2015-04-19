@@ -12,6 +12,10 @@ import scala.concurrent.Future
 class WhenGetSimulationStatus extends ScalaDsl with EN with Matchers {
 
   When("""^I send the get simulation status command$"""){ () =>
+    def requestStart: Req = url(uri + "/api/simulation").POST
+      .addHeader("Content-type", "application/json")
+
+    Http(requestStart)
 
     def request: Req = url(uri + "/api/simulation").GET
       .addHeader("Content-type", "application/json")
