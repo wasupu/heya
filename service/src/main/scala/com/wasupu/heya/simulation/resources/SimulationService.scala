@@ -20,12 +20,18 @@ class SimulationService extends HttpServiceActor {
           complete(StatusCodes.NoContent)
         }
       } ~
-      post {
-        dynamic {
-          world ! "start"
-          complete(StatusCodes.Created)
+        post {
+          dynamic {
+            world ! "start"
+            complete(StatusCodes.Created)
+          }
+        } ~
+        get {
+          dynamic {
+            world ! "status"
+            complete(StatusCodes.OK)
+          }
         }
-      }
     }
   }
 

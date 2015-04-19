@@ -9,10 +9,11 @@ import org.scalatest.Matchers
 
 import scala.concurrent.Future
 
-class WhenStartHeyaSimulation extends ScalaDsl with EN with Matchers {
+class WhenGetSimulationStatus extends ScalaDsl with EN with Matchers {
 
-  When( """^I send the start simulation command$""") { () =>
-    def request: Req = url(uri + "/api/simulation").POST
+  When("""^I send the get simulation status command$"""){ () =>
+
+    def request: Req = url(uri + "/api/simulation").GET
       .addHeader("Content-type", "application/json")
 
     val getResponse: Future[Response] = Http(request)
@@ -22,4 +23,5 @@ class WhenStartHeyaSimulation extends ScalaDsl with EN with Matchers {
   }
 
   var uri: String = System.getenv().getOrDefault("heyaUri", "http://127.0.0.1:8080")
+
 }

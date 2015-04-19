@@ -60,6 +60,29 @@ class SimulationServiceTest extends TestKit(ActorSystem("testing")) with FlatSpe
     worldProbe.expectMsg(500 millis, "stop")
   }
 
+  "Simulation service actor" should "respond with a HttpResponse with a 200 status code when request status" in {
+    implicit val timeout = Timeout(timeoutMillis millis)
+    val worldProbe = TestProbe()
+    val actorRef = TestActorRef(Props(new SimulationServiceStub(worldProbe.ref)))
+    val future = actorRef ? getSimulationStatusRequest
+
+    worldProbe.expectMsg("status")
+
+    val Success(response: HttpResponse) = future.value.get
+    response.status should be(StatusCodes.OK)
+  }
+
+  "Simulation service actor" should "retrieve the simulation status" in {
+    implicit val timeout = Timeout(timeoutMillis millis)
+
+    val worldProbe = TestProbe()
+
+    val actorRef = TestActorRef(Props(new SimulationServiceStub(worldProbe.ref)))
+    actorRef ? getSimulationStatusRequest
+
+    worldProbe.expectMsg(500 millis, "status")
+  }
+
   def createSimulationRequest: HttpRequest = {
     HttpRequest(HttpMethods.POST, "/api/simulation")
   }
@@ -67,6 +90,11 @@ class SimulationServiceTest extends TestKit(ActorSystem("testing")) with FlatSpe
   def deleteSimulationRequest: HttpRequest = {
     HttpRequest(HttpMethods.DELETE, "/api/simulation")
   }
+
+  def getSimulationStatusRequest: HttpRequest = {
+    HttpRequest(HttpMethods.GET, "/api/simulation")
+  }
+
 
   private class SimulationServiceStub(wold: ActorRef = TestProbe().ref) extends SimulationService {
     override def createWorld: ActorRef = wold
