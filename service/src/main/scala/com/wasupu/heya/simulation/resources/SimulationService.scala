@@ -13,10 +13,18 @@ import scala.language.postfixOps
 class SimulationService extends HttpServiceActor {
 
   def receive = runRoute {
-    post {
-      dynamic {
-        world ! "start"
-        complete(StatusCodes.Created)
+    dynamic {
+      delete {
+        dynamic {
+          world ! "stop"
+          complete(StatusCodes.NoContent)
+        }
+      } ~
+      post {
+        dynamic {
+          world ! "start"
+          complete(StatusCodes.Created)
+        }
       }
     }
   }

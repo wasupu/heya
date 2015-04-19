@@ -37,8 +37,35 @@ class SimulationServiceTest extends TestKit(ActorSystem("testing")) with FlatSpe
     worldProbe.expectMsg(500 millis, "start")
   }
 
+  "Simulation service actor" should "respond with a HttpResponse with a 204 status code when stop" in {
+    implicit val timeout = Timeout(timeoutMillis millis)
+    val worldProbe = TestProbe()
+    val actorRef = TestActorRef(Props(new SimulationServiceStub(worldProbe.ref)))
+    val future = actorRef ? deleteSimulationRequest
+
+    worldProbe.expectMsg("stop")
+
+    val Success(response: HttpResponse) = future.value.get
+    response.status should be(StatusCodes.NoContent)
+  }
+
+  "Simulation service actor" should "stop the simulation" in {
+    implicit val timeout = Timeout(timeoutMillis millis)
+
+    val worldProbe = TestProbe()
+
+    val actorRef = TestActorRef(Props(new SimulationServiceStub(worldProbe.ref)))
+    actorRef ? deleteSimulationRequest
+
+    worldProbe.expectMsg(500 millis, "stop")
+  }
+
   def createSimulationRequest: HttpRequest = {
     HttpRequest(HttpMethods.POST, "/api/simulation")
+  }
+
+  def deleteSimulationRequest: HttpRequest = {
+    HttpRequest(HttpMethods.DELETE, "/api/simulation")
   }
 
   private class SimulationServiceStub(wold: ActorRef = TestProbe().ref) extends SimulationService {
