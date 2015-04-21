@@ -1,13 +1,13 @@
-package com.wasupu.heya.calculator.resources
-
+package com.wasupu.heya.resources
 
 import akka.actor.{ActorRef, Props}
+import akka.pattern.ask
 import akka.util.Timeout
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
-import com.wasupu.heya.calculator.domain.World
-import com.wasupu.heya.calculator.domain.WorldProtocol.Status
+import com.wasupu.heya.simulation.domain.World
+import com.wasupu.heya.simulation.domain.WorldProtocol.WordStatus
 import org.json4s.DefaultFormats
 import spray.http.StatusCodes
 import spray.routing._
@@ -15,7 +15,6 @@ import spray.routing._
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.language.postfixOps
-import akka.pattern.ask
 
 class SimulationService extends HttpServiceActor {
 
@@ -36,7 +35,7 @@ class SimulationService extends HttpServiceActor {
         get {
           dynamic {
             val responseFuture: Future[String] = (world ? "status")
-              .mapTo[Status]
+              .mapTo[WordStatus]
               .map(worldStatus)
               .map(result => mapper.writeValueAsString(result))
 
@@ -46,7 +45,7 @@ class SimulationService extends HttpServiceActor {
     }
   }
 
-  private def worldStatus(status:Status): Map[String, _] ={
+  private def worldStatus(status:WordStatus): Map[String, _] ={
     Map[String, Any](
       "robots" -> Seq("string"))
   }

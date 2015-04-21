@@ -1,11 +1,11 @@
-package com.wasupu.heya.calculator.domain
+package com.wasupu.heya.simulation.domain
 
-import akka.actor.Actor
-import com.wasupu.heya.calculator.domain.WorldProtocol.Status
+import akka.actor.{ActorRef, Actor, Props}
+import com.wasupu.heya.simulation.domain.WorldProtocol.WordStatus
 
 object WorldProtocol{
 
-  case class Status(numberOfRobots:Int)
+  case class WordStatus(numberOfRobots:Int)
 
 }
 
@@ -13,10 +13,17 @@ class World extends Actor {
 
   override def receive: Receive = {
     case "start" => {
-
+      robot ! "start"
     }
+
     case "status" =>{
-      sender() ! Status(1)
+      sender() ! WordStatus(1)
     }
   }
+
+  protected def createRobot():ActorRef  = {
+    context.system.actorOf(Props[Robot])
+  }
+
+  private val robot: ActorRef = createRobot()
 }

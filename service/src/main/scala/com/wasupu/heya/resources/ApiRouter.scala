@@ -1,7 +1,6 @@
 package com.wasupu.heya.resources
 
 import akka.actor.Props
-import com.wasupu.heya.calculator.resources.SimulationService
 import com.wasupu.heya.heartbeat.resources.HeartbeatService
 import spray.routing.HttpServiceActor
 

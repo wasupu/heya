@@ -1,18 +1,19 @@
-package com.wasupu.heya.calculator.resources
+package com.wasupu.heya.resources.resources
 
 import akka.actor.{ActorRef, ActorSystem, Props}
-import akka.pattern.ask
 import akka.testkit.{TestActorRef, TestKit, TestProbe}
 import akka.util.Timeout
-import com.wasupu.heya.calculator.domain.WorldProtocol.Status
+import com.wasupu.heya.resources.SimulationService
+import com.wasupu.heya.simulation.domain.WorldProtocol.WordStatus
 import org.json4s.DefaultFormats
+import org.json4s.jackson.JsonMethods._
 import org.scalatest.{FlatSpecLike, Matchers}
 import spray.http._
+import akka.pattern.ask
 
 import scala.concurrent.duration._
 import scala.language.postfixOps
 import scala.util.Success
-import org.json4s.jackson.JsonMethods._
 
 class SimulationServiceTest extends TestKit(ActorSystem("testing")) with FlatSpecLike with Matchers {
 
@@ -69,7 +70,7 @@ class SimulationServiceTest extends TestKit(ActorSystem("testing")) with FlatSpe
     val future = actorRef ? getSimulationStatusRequest
 
     worldProbe.expectMsg("status")
-    worldProbe.reply(Status(1))
+    worldProbe.reply(WordStatus(1))
 
     val Success(response: HttpResponse) = future.value.get
     response.status should be(StatusCodes.OK)
@@ -93,7 +94,7 @@ class SimulationServiceTest extends TestKit(ActorSystem("testing")) with FlatSpe
     val future = actorRef ? getSimulationStatusRequest
 
     worldProbe.expectMsg("status")
-    worldProbe.reply(Status(1))
+    worldProbe.reply(WordStatus(1))
 
     val Success(response: HttpResponse) = future.value.get
 
